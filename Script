@@ -42,6 +42,30 @@ Close.MouseButton1Click:Connect(function()
 	ScreenGui:Destroy()
 end)
 
+-- Tombol SC1
+local SC1 = Instance.new("TextButton")
+SC1.Parent = TopBar
+SC1.Size = UDim2.new(0, 60, 0, 26)
+SC1.Position = UDim2.new(1, -150, 0.5, -13)
+SC1.Text = "SC1: OFF"
+SC1.Font = Enum.Font.GothamBold
+SC1.TextSize = 12
+SC1.TextColor3 = Color3.new(1,1,1)
+SC1.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SC1.BorderSizePixel = 0
+
+-- Tombol SC2
+local SC2 = Instance.new("TextButton")
+SC2.Parent = TopBar
+SC2.Size = UDim2.new(0, 60, 0, 26)
+SC2.Position = UDim2.new(1, -85, 0.5, -13)
+SC2.Text = "SC2: OFF"
+SC2.Font = Enum.Font.GothamBold
+SC2.TextSize = 12
+SC2.TextColor3 = Color3.new(1,1,1)
+SC2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SC2.BorderSizePixel = 0
+
 -- === DRAG SYSTEM ===
 local dragging = false
 local dragStart
@@ -80,3 +104,33 @@ TopBar.InputChanged:Connect(function(input)
 		end
 	end
 end)
+
+local sc1On = false
+local sc2On = false
+
+SC1.MouseButton1Click:Connect(function()
+	sc1On = not sc1On
+	if sc1On then
+		SC1.Text = "SC1: ON"
+		SC1.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+		-- AKSI SC1 ON DI SINI
+	else
+		SC1.Text = "SC1: OFF"
+		SC1.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+		-- AKSI SC1 OFF DI SINI
+	end
+end)
+
+SC2.MouseButton1Click:Connect(function()
+	sc2On = not sc2On
+	if sc2On then
+		SC2.Text = "SC2: ON"
+		SC2.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+		-- AKSI SC2 ON DI SINI
+	else
+		SC2.Text = "SC2: OFF"
+		SC2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+		-- AKSI SC2 OFF DI SINI
+	end
+end)
+
