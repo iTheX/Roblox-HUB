@@ -47,23 +47,15 @@ ToggleButton.MouseButton1Click:Connect(function()
     if guiEnabled then
         ToggleButton.Text = "On"
         MainFrame.Visible = true
-    else
-        ToggleButton.Text = "Off"
-        MainFrame.Visible = false
-    end
-end)ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.TextSize = 24
-
--- Functionality
-CloseButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
-ToggleButton.MouseButton1Click:Connect(function()
-    guiEnabled = not guiEnabled
-    if guiEnabled then
-        ToggleButton.Text = "On"
-        MainFrame.Visible = true
+        -- Execute additional looping code when turned on
+        while guiEnabled do
+            local args = {
+                true,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("1d89399b-fdf0-4dea-a9e6-eab9e790fe68"):WaitForChild("Events"):WaitForChild(""):FireServer(unpack(args))
+            wait(0.5) -- Add a small delay to avoid spamming the server
+        end
     else
         ToggleButton.Text = "Off"
         MainFrame.Visible = false
