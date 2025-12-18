@@ -51,4 +51,21 @@ ToggleButton.MouseButton1Click:Connect(function()
         ToggleButton.Text = "Off"
         MainFrame.Visible = false
     end
+end)ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextSize = 24
+
+-- Functionality
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+ToggleButton.MouseButton1Click:Connect(function()
+    guiEnabled = not guiEnabled
+    if guiEnabled then
+        ToggleButton.Text = "On"
+        MainFrame.Visible = true
+    else
+        ToggleButton.Text = "Off"
+        MainFrame.Visible = false
+    end
 end)
