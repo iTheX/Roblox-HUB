@@ -1,1 +1,76 @@
+-- Roblox GUI Script
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
 
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = PlayerGui
+screenGui.Name = "CustomGui"
+
+-- Create Main Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Parent = screenGui
+mainFrame.Size = UDim2.new(0, 300, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+mainFrame.Active = true
+mainFrame.Draggable = true
+
+-- Create Topbar
+local topBar = Instance.new("Frame")
+topBar.Parent = mainFrame
+topBar.Size = UDim2.new(1, 0, 0, 30)
+topBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+
+topBar.Name = "TopBar"
+
+-- Create Close Button
+local closeButton = Instance.new("TextButton")
+closeButton.Parent = topBar
+closeButton.Size = UDim2.new(0, 50, 1, 0)
+closeButton.Position = UDim2.new(1, -60, 0, 0)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Create Minimize Button
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Parent = topBar
+minimizeButton.Size = UDim2.new(0, 50, 1, 0)
+minimizeButton.Position = UDim2.new(1, -120, 0, 0)
+minimizeButton.Text = "_"
+minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 50)
+minimizeButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+local isMinimized = false
+minimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        mainFrame.Size = UDim2.new(mainFrame.Size.X.Scale, mainFrame.Size.X.Offset, 0, 30)
+    else
+        mainFrame.Size = UDim2.new(mainFrame.Size.X.Scale, mainFrame.Size.X.Offset, 0, 200)
+    end
+end)
+
+-- Add Title
+local title = Instance.new("TextLabel")
+title.Parent = topBar
+title.Size = UDim2.new(1, -120, 1, 0)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "Roblox Hub"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.BackgroundTransparency = 1
+
+-- Add some content in the mainFrame for demonstration
+local contentLabel = Instance.new("TextLabel")
+contentLabel.Parent = mainFrame
+contentLabel.Size = UDim2.new(1, 0, 1, -30)
+contentLabel.Position = UDim2.new(0, 0, 0, 30)
+contentLabel.Text = "Hello, this is your Roblox Hub!"
+contentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+contentLabel.BackgroundTransparency = 1
