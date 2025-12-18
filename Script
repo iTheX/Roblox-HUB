@@ -1,42 +1,82 @@
--- Buat ScreenGui
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "TopBarGui"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local UserInputService = game:GetService("UserInputService")
+local Player = game.Players.LocalPlayer
 
--- Top Bar
+-- ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DraggableTopBarGui"
+ScreenGui.Parent = Player:WaitForChild("PlayerGui")
+
+-- Topbar Frame
 local TopBar = Instance.new("Frame")
-TopBar.Name = "TopBar"
 TopBar.Parent = ScreenGui
-TopBar.Size = UDim2.new(1, 0, 0, 40)
-TopBar.Position = UDim2.new(0, 0, 0, 0)
-TopBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TopBar.Size = UDim2.new(0, 400, 0, 40)
+TopBar.Position = UDim2.new(0.5, -200, 0.1, 0)
+TopBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 TopBar.BorderSizePixel = 0
 
 -- Judul
 local Title = Instance.new("TextLabel")
 Title.Parent = TopBar
-Title.Size = UDim2.new(0, 200, 1, 0)
+Title.Size = UDim2.new(1, -50, 1, 0)
 Title.Position = UDim2.new(0, 10, 0, 0)
-Title.Text = "My Roblox GUI"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.BackgroundTransparency = 1
-Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Text = "Draggable TopBar GUI"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 16
+Title.TextSize = 14
+Title.TextXAlignment = Enum.TextXAlignment.Left
 
 -- Tombol Close
-local CloseButton = Instance.new("TextButton")
-CloseButton.Parent = TopBar
-CloseButton.Size = UDim2.new(0, 40, 1, 0)
-CloseButton.Position = UDim2.new(1, -45, 0, 0)
-CloseButton.Text = "X"
-CloseButton.Font = Enum.Font.GothamBold
-CloseButton.TextSize = 18
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-CloseButton.BorderSizePixel = 0
+local Close = Instance.new("TextButton")
+Close.Parent = TopBar
+Close.Size = UDim2.new(0, 40, 1, 0)
+Close.Position = UDim2.new(1, -40, 0, 0)
+Close.Text = "X"
+Close.Font = Enum.Font.GothamBold
+Close.TextSize = 16
+Close.TextColor3 = Color3.new(1,1,1)
+Close.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+Close.BorderSizePixel = 0
 
--- Event Close
-CloseButton.MouseButton1Click:Connect(function()
+Close.MouseButton1Click:Connect(function()
 	ScreenGui:Destroy()
+end)
+
+-- === DRAG SYSTEM ===
+local dragging = false
+local dragStart
+local startPos
+
+local function update(input)
+	local delta = input.Position - dragStart
+	TopBar.Position = UDim2.new(
+		startPos.X.Scale,
+		startPos.X.Offset + delta.X,
+		startPos.Y.Scale,
+		startPos.Y.Offset + delta.Y
+	)
+end
+
+TopBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 
+	or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = TopBar.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+TopBar.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement 
+	or input.UserInputType == Enum.UserInputType.Touch then
+		if dragging then
+			update(input)
+		end
+	end
 end)
