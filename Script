@@ -1,56 +1,67 @@
--- GUI Creation
+local RunService = game:GetService("RunService") -- Untuk loop berbasis frame
+local onPosition = false -- Mengontrol apakah "loop" aktif atau tidak
+
+-- RemoteEvent args
+local args = {
+    true,
+    [3] = false
+}
+
+-- GUI Setup
 local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local ToggleButton = Instance.new("TextButton")
-local EliminateButton = Instance.new("TextButton")
 
--- Parent the GUI to the game's PlayerGui
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.Name = "ToggleGui"
+ScreenGui.Name = "ControlGUI"
 
--- Frame setup
 Frame.Parent = ScreenGui
 Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
 Frame.Size = UDim2.new(0, 200, 0, 100)
 Frame.AnchorPoint = Vector2.new(0.5, 0.5)
 
--- Toggle Button setup
 ToggleButton.Parent = Frame
 ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
-ToggleButton.Position = UDim2.new(0.5, -70, 0.3, -15)
-ToggleButton.Size = UDim2.new(0, 140, 0, 30)
-ToggleButton.Text = "Turn On"
+ToggleButton.Position = UDim2.new(0.5, -70, 0.5, -20)
+ToggleButton.Size = UDim2.new(0, 140, 0, 40)
+ToggleButton.Text = "Turn ON"
 ToggleButton.TextColor3 = Color3.new(1, 1, 1)
 ToggleButton.Font = Enum.Font.SourceSans
 ToggleButton.TextSize = 24
 
--- Eliminate Button setup
-EliminateButton.Parent = Frame
-EliminateButton.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
-EliminateButton.Position = UDim2.new(0.5, -70, 0.7, -15)
-EliminateButton.Size = UDim2.new(0, 140, 0, 30)
-EliminateButton.Text = "Eliminate GUI"
-EliminateButton.TextColor3 = Color3.new(1, 1, 1)
-EliminateButton.Font = Enum.Font.SourceSans
-EliminateButton.TextSize = 24
+-- Fungsi untuk menangani aksi saat loop aktif
+local function fireEvent()
+    while onPosition do
+        -- RemoteEvent Call
+        local success, err = pcall(function()
+            game:GetService("ReplicatedStorage")
+                :WaitForChild("1d89399b-fdf0-4dea-a9e6-eab9e790fe68")
+                :WaitForChild("Events")
+                :WaitForChild("") -- Ganti dengan nama valid!
+                :FireServer(unpack(args))
+        end)
 
--- Toggle button functionality
-local isOn = false
+        if not success then
+            warn("Gagal memanggil RemoteEvent: " .. tostring(err))
+        end
+
+        -- Tunggu sebelum mengulang
+        task.wait(0.1)
+    end
+end
+
+-- Fungsi untuk mengatur tombol ON/OFF
 ToggleButton.MouseButton1Click:Connect(function()
-    isOn = not isOn
-    if isOn then
-        ToggleButton.Text = "Turn Off"
-        print("Feature is ON")
+    onPosition = not onPosition -- Toggle posisi
+
+    if onPosition then
+        ToggleButton.Text = "Turn OFF"
+        print("Loop dimulai.") -- Debug Log
+        fireEvent() -- Mulai menjalankan loop
     else
-        ToggleButton.Text = "Turn On"
-        print("Feature is OFF")
+        ToggleButton.Text = "Turn ON"
+        print("Loop dihentikan.") -- Debug Log
+        -- Loop akan berhenti karena kondisi `onPosition` sudah tidak `true`
     end
 end)
-
--- Eliminate button functionality
-EliminateButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
-
