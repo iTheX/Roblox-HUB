@@ -2,6 +2,8 @@
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local CloseButton = Instance.new("TextButton")
+local ToggleButton = Instance.new("TextButton")
+local guiEnabled = true
 
 -- Properties
 ScreenGui.Name = "ScriptHub"
@@ -25,7 +27,28 @@ CloseButton.Text = "Close"
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.TextSize = 24
 
+ToggleButton.Name = "ToggleButton"
+ToggleButton.Parent = MainFrame
+ToggleButton.BackgroundColor3 = Color3.fromRGB(80, 255, 80)
+ToggleButton.Position = UDim2.new(0, 10, 0, 100)
+ToggleButton.Size = UDim2.new(0, 280, 0, 40)
+ToggleButton.Font = Enum.Font.SourceSans
+ToggleButton.Text = "On"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextSize = 24
+
 -- Functionality
 CloseButton.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
+end)
+
+ToggleButton.MouseButton1Click:Connect(function()
+    guiEnabled = not guiEnabled
+    if guiEnabled then
+        ToggleButton.Text = "On"
+        MainFrame.Visible = true
+    else
+        ToggleButton.Text = "Off"
+        MainFrame.Visible = false
+    end
 end)
